@@ -11,7 +11,6 @@ const errorHandler = (err, req, res, next) => {
 const errorInit = (status, message, endpoint) => {
     const error = new Error(message);
     error.status = status;
-    error.service = endpoint;
 
     return error;
 };
@@ -25,7 +24,7 @@ const errorCatcher = fn => (req, res, next) => {
         const formatted = errorInit(
             err.status || 500,
             err.message || "Error inesperado",
-            endpoint || req.originalUrl
+            req.originalUrl
         );
 
         next(formatted)

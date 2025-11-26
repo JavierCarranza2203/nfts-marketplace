@@ -1,9 +1,9 @@
-import { uploadToPinata, mintNFT } from "./web3.js";
+import { getMetaData } from "./api/nftApi.js";
+import { mintNFT } from "./web3/nfts.js";
 
 const fileInput = document.getElementById("file");
 const nombreInput = document.getElementById("nombre");
 const descInput = document.getElementById("descripcion");
-const precioInput = document.getElementById("precio");
 const btnUpload = document.getElementById("btn-upload");
 const statusEl = document.getElementById("status");
 
@@ -17,18 +17,13 @@ btnUpload.addEventListener("click", async () => {
   }
 
   try {
-    // 1️⃣ Subir imagen a Pinata
-    const imageUrl = await uploadToPinata(file);
+    const imageUrl = await getMetaData(nombreInput.value, descInput.value, file)
+
 
     statusEl.textContent = "Guardando NFT en el contrato...";
 
     // 2️⃣ Mintear NFT con datos del formulario
-    await mintNFT({
-      nombre: nombreInput.value,
-      descripcion: descInput.value,
-      precio: precioInput.value,
-      imageUrl
-    });
+    await mintNFT(imageUrl);
 
     statusEl.textContent = "NFT subido correctamente ✔️";
   } catch (err) {

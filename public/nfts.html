@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>NFT Marketplace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #050816;
+      color: #f5f5f5;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1rem 3rem;
+    }
+
+    .acciones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: none;
+      padding: 0.7rem 1.3rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #e5e5e5;
+      border: 1px solid #4b5563;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      background: #111827;
+    }
+
+    #status {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+
+    #nft-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+    }
+
+    .nft-card {
+      background: #111827;
+      border-radius: 12px;
+      padding: 0.8rem;
+      border: 1px solid #1f2933;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .nft-card img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .nft-card .meta {
+      font-size: 0.9rem;
+    }
+
+    .nft-card .precio {
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .nft-card .btn-primary {
+      margin-top: 0.4rem;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mis NFT's</h1>
+  </header>
+
+  <main>
+    <!-- Listado de NFTs -->
+    <section>
+      <h2>Mis NFT's</h2>
+      <div id="nft-list"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <!-- Importa tu JS como módulo (para que funcione import "./web3.js") -->
+  <script type="module" src="./js/nfts.js"></script>
+</body>
+</html>

@@ -1,18 +1,21 @@
 require('dotenv').config({path:require('find-config')('.env')})
-const fs = require('fs')
 const FormData = require('form-data')
 const axios = require('axios')
-const ethers = require('ethers')
+const { Readable } = require('stream');
+const { PINATA_API_KEY, PINATA_SECRET_KEY, API_URL } = process.env
 
-async function createImgInfo(imgRoute) {
-    const stream = fs.createReadStream(imgRoute)
-    const data = new FormData()
+async function createImgInfo(img) {
+    const stream = Readable.from(img.buffer);
+    const data = new FormData();
 
-    data.append('file', stream)
+    data.append("file", stream, {
+        filename: img.originalname,
+        contentType: img.mimetype
+    });
 
     const fileResponse = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
         headers:{
-            "Content-Type":`multipart/form-data: boundary=${data._boundary}`,
+            ...data.getHeaders(),
             pinata_api_key:PINATA_API_KEY,
             pinata_secret_api_key:PINATA_SECRET_KEY
         }
@@ -50,8 +53,8 @@ async function createJsonInfo(metadata) {
     return tokenURI
 }
 
-async function createNFT(imgRoute, name, description) {
-    const imgInfo = await createImgInfo(imgRoute)
+async function createNFT(img, name, description) {
+    const imgInfo = await createImgInfo(img)
 
     const metadata = {
         image: imgInfo,
@@ -68,6 +71,30 @@ async function createNFT(imgRoute, name, description) {
     return tokenURI;
 }
 
+async function getAccountNfts(account) {
+    const response = await fetch(API_URL + "/getNFTs/?owner=" + account)
+
+    const data = await response.json();
+
+    const nfts = data["ownedNfts"]
+
+    console.log(nfts)
+
+    return nfts.map(parseNFTData)
+}
+
+function parseNFTData(nft) {
+    return {
+        contractAddress: nft.contract.address,
+        tokenId: parseInt(nft.id.tokenId, 16), // hex → entero
+        name: nft.title || nft.metadata?.name,
+        description: nft.description || nft.metadata?.description,
+        image: nft.media?.[0]?.raw || nft.metadata?.image
+    };
+}
+
+
 module.exports = {
-    createNFT
+    createNFT,
+    getAccountNfts
 }
