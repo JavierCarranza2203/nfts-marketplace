@@ -5,8 +5,8 @@ const { errorCatcher } = require('../utils/errorsHandler')
 const marketplaceRouter = express.Router()
 
 marketplaceRouter.get('/nfts-onsale', errorCatcher(async (_ , res) => {
-    const nfts = marketplaceController.getNFTsOnSale()
-
+    const nfts = await marketplaceController.getNFTsOnSale()
+    console.log(nfts)
     res.status(200).json(nfts)
 }))
 

@@ -1,4 +1,4 @@
-import { ensureContract } from "../web3Helper.js";
+import { ensureContract } from "./contract.js";
 import { CONTRACTS } from "../config/contracts.js";
 
 export async function getAllListings() {
@@ -39,5 +39,21 @@ export async function getAllListings() {
     } catch (err) {
         console.error("Error al obtener NFTs:", err);
         return [];
+    }
+}
+
+export async function postNftToSell(contractAddress, tokenId, price) {
+    const contract = await ensureContract(CONTRACTS.MARKETPLACE.address, CONTRACTS.MARKETPLACE.abi);
+
+    try {
+        const weiPrice = ethers.utils.parseEther("0.0001"); 
+        await contract.PostNFTToSell(contractAddress, tokenId, weiPrice);
+    }
+    catch(error) {
+        console.warn("Error", error);
+        return {
+            success: false,
+            error: error.message
+        }
     }
 }

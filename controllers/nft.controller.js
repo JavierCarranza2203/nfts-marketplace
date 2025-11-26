@@ -78,8 +78,6 @@ async function getAccountNfts(account) {
 
     const nfts = data["ownedNfts"]
 
-    console.log(nfts)
-
     return nfts.map(parseNFTData)
 }
 

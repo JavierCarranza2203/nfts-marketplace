@@ -7,7 +7,7 @@ const { MARKETPLACE_CONTRACT_ADDRESS } = process.env
 async function getNFTsOnSale() {
     const marketplaceContract = await getContract(MARKETPLACE_CONTRACT_ADDRESS, contract.abi)
     const nfts = await marketplaceContract.GetNFTsOnSale()
-    console.log(nfts)
+
     return nfts.map(formatNFT)
 }
 

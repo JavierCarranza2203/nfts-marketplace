@@ -3,13 +3,12 @@ import { buy } from "./web3.js";
 import { connectWallet } from './web3/provider.js'
 import { getAccountNfts } from "./api/nftApi.js"
 import { MyNftsCard } from "./utils/NftsCards.js";
+import { getNftsOnSale } from "./api/marketplaceApi.js";
 
 // Elementos del DOM
 const btnConnect = document.getElementById("btn-connect");
 const statusEl  = document.getElementById("status");
 const nftList   = document.getElementById("nft-list");
-
-console.log("main.js cargado", { btnConnect, statusEl, nftList });
 
 // ========= Conectar Metamask =========
 btnConnect?.addEventListener("click", async () => {
@@ -31,18 +30,18 @@ async function cargarMarketplace() {
   nftList.innerHTML = "Cargando NFTs...";
 
   try {
-    // const nfts = await getAllListings();
-    const mynfts = await getAccountNfts()
+    const nfts = await getNftsOnSale();
 
     nftList.innerHTML = "";
-    // if (!nfts.length) {
-    //   nftList.textContent = "No hay NFTs listados todavía.";
-    //   return;
-    // }
+
+    if (nfts.length <= 0) {
+      nftList.textContent = "No hay NFTs listados todavía.";
+      return;
+    }
 
     // nfts.forEach((nft, index) => addNftCard(nft, index));
 
-    mynfts.forEach(nft => nftList.appendChild(MyNftsCard(nft)));
+    nfts.forEach(nft => nftList.appendChild(MyNftsCard(nft)));
   } catch (err) {
     console.error(err);
     nftList.textContent = "Error al obtener NFTs.";

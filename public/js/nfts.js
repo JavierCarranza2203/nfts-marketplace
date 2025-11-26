@@ -1,5 +1,5 @@
 import { MyNftsCard } from "./utils/NftsCards.js";
-import { getAccountNfts } from "./api/nftApi";
+import { getAccountNfts } from "./api/nftApi.js";
 
 async function cargarMarketplace() {
     const nftList = document.getElementById('nft-list')
@@ -7,16 +7,13 @@ async function cargarMarketplace() {
     nftList.innerHTML = "Cargando NFTs...";
 
     try {
-        // const nfts = await getAllListings();
         const mynfts = await getAccountNfts()
 
         nftList.innerHTML = "";
-        // if (!nfts.length) {
-        //   nftList.textContent = "No hay NFTs listados todavía.";
-        //   return;
-        // }
-
-        // nfts.forEach((nft, index) => addNftCard(nft, index));
+        if (!mynfts.length) {
+            nftList.textContent = "No hay NFTs listados todavía.";
+            return;
+        }
 
         mynfts.forEach(nft => nftList.appendChild(MyNftsCard(nft)));
     } catch (err) {
@@ -24,3 +21,5 @@ async function cargarMarketplace() {
         nftList.textContent = "Error al obtener NFTs.";
     }
 }
+
+cargarMarketplace()

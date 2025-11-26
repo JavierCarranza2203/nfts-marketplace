@@ -1,4 +1,7 @@
-// Función interna para crear la tarjeta
+import { CONTRACTS } from "../config/contracts.js";
+import { ensureContract } from "../web3/contract.js";
+import { postNftToSell } from "../web3/marketplace.js";
+
 function createCard({ image, description, name, contractAddress, tokenId, vendedor, precio, enVenta, btnText, onClick }) {
     const card = document.createElement("article");
     card.className = "nft-card";
@@ -61,7 +64,7 @@ function createCard({ image, description, name, contractAddress, tokenId, vended
     const btn = document.createElement("button");
     btn.className = "btn-primary btn-accion";
     btn.textContent = btnText;
-    if (onClick) btn.addEventListener("click", () => onClick({ card, image, description, name, contractAddress, tokenId, vendedor, precio, enVenta }));
+    if (onClick) btn.addEventListener("click", () => onClick());
     card.appendChild(btn);
 
     return card;
@@ -70,7 +73,16 @@ function createCard({ image, description, name, contractAddress, tokenId, vended
 // =====================
 // Mis NFTs
 // =====================
-export function MyNftsCard({ image, description, name, contractAddress, tokenId, onClick }) {
+export function MyNftsCard({ image, description, name, contractAddress, tokenId }) {
+    const onClick = async () => {
+        const nft = await ensureContract(CONTRACTS.NFT.address, CONTRACTS.NFT.abi);
+        console.log(tokenId)
+        await nft.approve(CONTRACTS.MARKETPLACE.address, String(tokenId));
+
+        await postNftToSell(contractAddress, tokenId)
+        console.log("Hecho")
+    }
+
     return createCard({
         image,
         description,
@@ -85,7 +97,7 @@ export function MyNftsCard({ image, description, name, contractAddress, tokenId,
 // =====================
 // Marketplace
 // =====================
-export function addNftCard({ imageUrl, descripcion, vendedor, precio, index, onClick }) {
+export function addNftCard({ imageUrl, descripcion, vendedor, precio, onClick }) {
     const card = createCard({
         image: imageUrl,
         description: descripcion,
