@@ -14,15 +14,14 @@ async function getNFTsOnSale() {
 async function getNFTOnSale(nftProductId) {
     const marketplaceContract = await getContract(MARKETPLACE_CONTRACT_ADDRESS, contract.abi)
     const nft = await marketplaceContract.GetNFTOnSale(nftProductId)
-    console.log(nft)
     return formatNFT(nft)
 }
 
 function formatNFT(data) {
     return {
-        id: data[0],
+        id: ethers.BigNumber.from(data[0]).toNumber(),
         contract: data[1],
-        tokenId: data[2],
+        tokenId: ethers.BigNumber.from(data[2]).toNumber(),
         price: ethers.utils.formatEther(data[3]),
         seller: data[4]
     }

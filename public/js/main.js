@@ -2,7 +2,7 @@
 import { buy } from "./web3.js";
 import { connectWallet } from './web3/provider.js'
 import { getAccountNfts } from "./api/nftApi.js"
-import { MyNftsCard } from "./utils/NftsCards.js";
+import { addNftCard, MyNftsCard } from "./utils/NftsCards.js";
 import { getNftsOnSale } from "./api/marketplaceApi.js";
 
 // Elementos del DOM
@@ -41,7 +41,7 @@ async function cargarMarketplace() {
 
     // nfts.forEach((nft, index) => addNftCard(nft, index));
 
-    nfts.forEach(nft => nftList.appendChild(MyNftsCard(nft)));
+    nfts.forEach(nft => nftList.appendChild(addNftCard(nft)));
   } catch (err) {
     console.error(err);
     nftList.textContent = "Error al obtener NFTs.";

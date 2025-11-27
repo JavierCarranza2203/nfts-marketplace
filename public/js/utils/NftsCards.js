@@ -97,13 +97,14 @@ export function MyNftsCard({ image, description, name, contractAddress, tokenId 
 // =====================
 // Marketplace
 // =====================
-export function addNftCard({ imageUrl, descripcion, vendedor, precio, onClick }) {
+export function addNftCard({ imageUrl, descripcion, seller, price, name, contract, id, onClick }) {
     const card = createCard({
         image: imageUrl,
         description: descripcion,
-        vendedor,
-        precio,
+        vendedor: seller,
+        precio: price,
         btnText: "Comprar",
+        name,
         onClick
     });
 
