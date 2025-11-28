@@ -1,3 +1,7 @@
+import { ensureContract } from "./contract.js";
+
+ensureContract
+
 export let provider = null
 export let signer = null
 

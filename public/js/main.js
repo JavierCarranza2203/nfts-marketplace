@@ -1,8 +1,6 @@
 // public/js/main.js
-import { buy } from "./web3.js";
 import { connectWallet } from './web3/provider.js'
-import { getAccountNfts } from "./api/nftApi.js"
-import { addNftCard, MyNftsCard } from "./utils/NftsCards.js";
+import { addNftCard } from "./utils/NftsCards.js";
 import { getNftsOnSale } from "./api/marketplaceApi.js";
 
 // Elementos del DOM
@@ -16,6 +14,12 @@ btnConnect?.addEventListener("click", async () => {
     const account = await connectWallet();
     if (!account) return;
     statusEl.textContent = `Conectado: ${account}`;
+    
+    Swal.fire({
+      title: "Wallet conectada",
+      icon: "success",
+      theme: 'dark'
+    });
 
     // (Opcional) cargar NFTs del contrato
     await cargarMarketplace();

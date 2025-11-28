@@ -64,7 +64,7 @@ function createCard({ image, description, name, contractAddress, tokenId, vended
     const btn = document.createElement("button");
     btn.className = "btn-primary btn-accion";
     btn.textContent = btnText;
-    if (onClick) btn.addEventListener("click", () => onClick());
+    if (onClick) btn.addEventListener("click", async () => await onClick());
     card.appendChild(btn);
 
     return card;
@@ -75,13 +75,43 @@ function createCard({ image, description, name, contractAddress, tokenId, vended
 // =====================
 export function MyNftsCard({ image, description, name, contractAddress, tokenId }) {
     const onClick = async () => {
-        const nft = await ensureContract(CONTRACTS.NFT.address, CONTRACTS.NFT.abi);
-        console.log(tokenId)
-        await nft.approve(CONTRACTS.MARKETPLACE.address, String(tokenId));
+        const nft = await ensureContract(contractAddress, CONTRACTS.NFT.abi);
+        const tx = await nft.approve(CONTRACTS.MARKETPLACE.address, String(tokenId));
 
-        await postNftToSell(contractAddress, tokenId)
-        console.log("Hecho")
+        Swal.fire({
+            title: 'Esperando aprobación de contrato',
+            timerProgressBar: true,
+            theme: 'dark',
+            backdrop: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        await tx.wait()
+
+        const { value: precio } = await Swal.fire({
+            title: "Precio de venta",
+            input: "text",
+            inputLabel: "Ingresa el precio para este NFT",
+            inputPlaceholder: "0.05 ETH",
+            showCancelButton: true,
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
+            theme: 'dark'
+        });
+
+        if(precio) {
+            await postNftToSell(contractAddress, tokenId, precio)
+
+            Swal.fire({
+                title: "El NFT se ha puesto en venta",
+                icon: "success",
+                theme: 'dark'
+            });
+        }
     }
+
 
     return createCard({
         image,
@@ -97,7 +127,33 @@ export function MyNftsCard({ image, description, name, contractAddress, tokenId 
 // =====================
 // Marketplace
 // =====================
-export function addNftCard({ imageUrl, descripcion, seller, price, name, contract, id, onClick }) {
+export function addNftCard({ imageUrl, descripcion, seller, price, name, contract, id }) {
+    const onClick = async ()=> {
+        const nft = await ensureContract(CONTRACTS.MARKETPLACE.address, CONTRACTS.MARKETPLACE.abi)
+        const tx = await nft.BuyNFT(id, {
+            value: ethers.utils.parseEther(price)
+
+        })
+
+        Swal.fire({
+            title: 'Vendiendo...',
+            timerProgressBar: true,
+            theme: 'dark',
+            backdrop: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        await tx.wait()
+
+        Swal.fire({
+                title: "El NFT se ha transferido a tu cuenta",
+                icon: "success",
+                theme: 'dark'
+            });
+    }
+    
     const card = createCard({
         image: imageUrl,
         description: descripcion,

@@ -46,8 +46,9 @@ export async function postNftToSell(contractAddress, tokenId, price) {
     const contract = await ensureContract(CONTRACTS.MARKETPLACE.address, CONTRACTS.MARKETPLACE.abi);
 
     try {
-        const weiPrice = ethers.utils.parseEther("0.0001"); 
-        await contract.PostNFTToSell(contractAddress, tokenId, weiPrice);
+        const weiPrice = ethers.utils.parseEther(price); 
+        const tx = await contract.PostNFTToSell(contractAddress, tokenId, weiPrice);
+        tx.wait()
     }
     catch(error) {
         console.warn("Error", error);
