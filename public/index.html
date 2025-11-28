@@ -7,119 +7,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #050816;
-      color: #f5f5f5;
-    }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #050816;
+    color: #f5f5f5;
+  }
 
-    header {
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #222;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  header {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
+  header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
 
-    main {
-      max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 1rem 3rem;
-    }
+  main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem 3rem;
+  }
 
-    .acciones {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
 
-    .btn-primary,
-    .btn-secondary {
-      border: none;
-      padding: 0.7rem 1.3rem;
-      border-radius: 999px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      font-weight: 600;
-    }
+  .btn-primary,
+  .btn-secondary {
+    border: none;
+    padding: 0.7rem 1.3rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
 
-    .btn-primary {
-      background: #4f46e5;
-      color: #fff;
-    }
+  .btn-primary {
+    background: #4f46e5;
+    color: #fff;
+  }
 
-    .btn-primary:hover {
-      opacity: 0.9;
-    }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
 
-    .btn-secondary {
-      background: transparent;
-      color: #e5e5e5;
-      border: 1px solid #4b5563;
-      text-decoration: none;
-    }
+  .btn-secondary {
+    background: transparent;
+    color: #e5e5e5;
+    border: 1px solid #4b5563;
+    text-decoration: none;
+  }
 
-    .btn-secondary:hover {
-      background: #111827;
-    }
+  .btn-secondary:hover {
+    background: #111827;
+  }
 
-    #status {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      color: #d1d5db;
-    }
+  #status {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #d1d5db;
+  }
 
-    h2 {
-      margin-top: 2rem;
-      margin-bottom: 0.8rem;
-      font-size: 1.1rem;
-    }
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
 
-    #nft-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1rem;
-    }
+  /* === TARJETAS NFT IGUALADAS === */
+  #nft-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch; /* TODAS IGUALES */
+  }
 
-    .nft-card {
-      background: #111827;
-      border-radius: 12px;
-      padding: 0.8rem;
-      border: 1px solid #1f2933;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
+  .nft-card {
+    background: #111827;
+    border-radius: 12px;
+    padding: 0.8rem;
+    border: 1px solid #1f2933;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%; /* TODAS MISMA ALTURA */
+  }
 
-    .nft-card img {
-      width: 100%;
-      border-radius: 10px;
-      object-fit: cover;
-    }
+  /* === IMAGENES IGUALADAS === */
+  .nft-card img {
+    width: 100%;
+    height: 190px; /* valor fijo para alinear */
+    border-radius: 10px;
+    object-fit: cover; /* recorta y no deforma */
+  }
 
-    .nft-card .meta {
-      font-size: 0.9rem;
-    }
+  /* === TEXTO DEBAJO === */
+  .nft-card .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+  }
 
-    .nft-card .precio {
-      font-weight: 600;
-      margin-top: 0.2rem;
-    }
+  .nft-card .titulo {
+    font-weight: 600;
+  }
 
-    .nft-card .btn-primary {
-      margin-top: 0.4rem;
-      width: 100%;
-      text-align: center;
-    }
-  </style>
+  .nft-card .precio {
+    font-weight: 600;
+    margin-top: 0.2rem;
+  }
+
+  /* === DIRECCIÓN DEL VENDEDOR NO SE SALE === */
+  .nft-card .vendedor {
+    font-family: monospace;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* aparece ... */
+    display: block;
+    max-width: 100%;
+  }
+
+  /* === BOTÓN === */
+  .nft-card .btn-primary {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+  }
+</style>
+
 </head>
 <body>
   <header>
